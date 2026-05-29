@@ -20,56 +20,53 @@ if (show_ui) {
     // Điều hướng menu bằng phím mũi tên
     if (keyboard_check_pressed(vk_up)) {
         menu_index -= 1;
-        if (menu_index < 0) menu_index = 3;
+        if (menu_index < 0) menu_index = 4;
     }
     if (keyboard_check_pressed(vk_down)) {
         menu_index += 1;
-        if (menu_index > 3) menu_index = 0;
+        if (menu_index > 4) menu_index = 0;
     }
 
     // Chọn bằng Space hoặc Enter
     if (keyboard_check_pressed(vk_space) || keyboard_check_pressed(vk_enter)) {
         switch (menu_index) {
-            case 0: // Mua Khung Gỗ
-                if (array_length(global.unlocked_frames) > 1 && !global.unlocked_frames[1]) {
-                    if (global.money >= 50) {
-                        global.money -= 50;
-                        global.unlocked_frames[1] = true;
-                        show_message("Đã mua Khung Gỗ thành công!");
-                    } else {
-                        show_message("Bạn không đủ tiền!");
-                    }
-                } else {
-                    show_message("Bạn đã sở hữu Khung Gỗ rồi!");
-                }
+            case 0: // Mua Giay O Vuong
+                if (!global.unlocked_items.paper_grid) {
+                    if (global.coins >= 50) {
+                        global.coins -= 50;
+                        global.unlocked_items.paper_grid = true;
+                        show_message("Đã mua Giấy Ô Vuông thành công!");
+                    } else show_message("Bạn không đủ Xu!");
+                } else show_message("Bạn đã sở hữu Giấy Ô Vuông rồi!");
                 break;
-            case 1: // Mua Khung Vàng
-                if (array_length(global.unlocked_frames) > 2 && !global.unlocked_frames[2]) {
-                    if (global.money >= 150) {
-                        global.money -= 150;
-                        global.unlocked_frames[2] = true;
-                        show_message("Đã mua Khung Vàng thành công!");
-                    } else {
-                        show_message("Bạn không đủ tiền!");
-                    }
-                } else {
-                    show_message("Bạn đã sở hữu Khung Vàng rồi!");
-                }
+            case 1: // Mua Giay Cau Vong
+                if (!global.unlocked_items.paper_rainbow) {
+                    if (global.coins >= 100) {
+                        global.coins -= 100;
+                        global.unlocked_items.paper_rainbow = true;
+                        show_message("Đã mua Giấy Cầu Vồng thành công!");
+                    } else show_message("Bạn không đủ Xu!");
+                } else show_message("Bạn đã sở hữu Giấy Cầu Vồng rồi!");
                 break;
-            case 2: // Mua Giấy Vẽ Nhám (Background)
-                if (array_length(global.unlocked_bgs) > 1 && !global.unlocked_bgs[1]) {
-                    if (global.money >= 100) {
-                        global.money -= 100;
-                        global.unlocked_bgs[1] = true;
-                        show_message("Đã mua Giấy Vẽ Nhám thành công!");
-                    } else {
-                        show_message("Bạn không đủ tiền!");
-                    }
-                } else {
-                    show_message("Bạn đã sở hữu Giấy Vẽ Nhám rồi!");
-                }
+            case 2: // Mua Khung Hoa Cuc
+                if (!global.unlocked_items.frame_daisy) {
+                    if (global.coins >= 120) {
+                        global.coins -= 120;
+                        global.unlocked_items.frame_daisy = true;
+                        show_message("Đã mua Khung Hoa Cúc thành công!");
+                    } else show_message("Bạn không đủ Xu!");
+                } else show_message("Bạn đã sở hữu Khung Hoa Cúc rồi!");
                 break;
-            case 3: // Đóng
+            case 3: // Mua Khung Sieu Nhan
+                if (!global.unlocked_items.frame_superman) {
+                    if (global.coins >= 200) {
+                        global.coins -= 200;
+                        global.unlocked_items.frame_superman = true;
+                        show_message("Đã mua Khung Siêu Nhân thành công!");
+                    } else show_message("Bạn không đủ Xu!");
+                } else show_message("Bạn đã sở hữu Khung Siêu Nhân rồi!");
+                break;
+            case 4: // Đóng
                 show_ui = false;
                 break;
         }

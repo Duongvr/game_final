@@ -74,20 +74,15 @@ draw_list = function(title, items, names, current_sel, sx, sy, mx, my, clicked, 
         if (!is_unlocked) {
             draw_text(bx + bw/2, by + bh/2 - 10, iname);
             draw_set_color(c_red);
-            draw_text_transformed(bx + bw/2, by + bh/2 + 10, "Giá: " + string(price) + " Xu", 0.8, 0.8, 0);
+            draw_text_transformed(bx + bw/2, by + bh/2 + 10, "[KHÓA]", 0.8, 0.8, 0);
         } else {
             draw_text(bx + bw/2, by + bh/2, iname);
         }
         
-        if (clicked && is_hover) {
-            if (is_unlocked) {
+        if (is_hover) {
+            global.hover_active = true;
+            if (clicked && is_unlocked) {
                 res_sel = itm;
-            } else {
-                if (global.coins >= price) {
-                    global.coins -= price;
-                    global.unlocked_items[$ key] = true;
-                    res_sel = itm;
-                }
             }
         }
     }

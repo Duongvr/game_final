@@ -55,18 +55,25 @@ global.draw_paper = function(px, py, pw, ph, p_type) {
         draw_set_color(c_white);
         draw_rectangle(px, py, px+pw, py+ph, false);
     }
+    draw_set_color(c_white);
+    draw_set_alpha(1);
 }
 
 global.draw_frame = function(px, py, pw, ph, f_type, fw) {
+    var border = function(c, x, y, w, h, t) {
+        draw_set_color(c);
+        draw_rectangle(x-t, y-t, x+w+t, y, false);
+        draw_rectangle(x-t, y+h, x+w+t, y+h+t, false);
+        draw_rectangle(x-t, y, x, y+h, false);
+        draw_rectangle(x+w, y, x+w+t, y+h, false);
+    };
+
     if (f_type == "basic") {
-        var c1 = make_color_rgb(90, 50, 20);
-        var c2 = make_color_rgb(140, 80, 30);
-        draw_set_color(c1); draw_rectangle(px-fw, py-fw, px+pw+fw, py+ph+fw, false);
-        draw_set_color(c2); draw_rectangle(px-fw+5, py-fw+5, px+pw+fw-5, py+ph+fw-5, false);
+        border(make_color_rgb(90, 50, 20), px, py, pw, ph, fw);
+        border(make_color_rgb(140, 80, 30), px, py, pw, ph, fw-5);
         draw_set_color(c_black); draw_rectangle(px-fw, py-fw, px+pw+fw, py+ph+fw, true);
     } else if (f_type == "daisy") {
-        draw_set_color(make_color_rgb(170, 255, 170)); 
-        draw_rectangle(px-fw, py-fw, px+pw+fw, py+ph+fw, false);
+        border(make_color_rgb(170, 255, 170), px, py, pw, ph, fw);
         draw_set_color(c_black); draw_rectangle(px-fw, py-fw, px+pw+fw, py+ph+fw, true);
         for(var i=10; i<pw; i+=50) {
             draw_set_color(c_white); draw_circle(px+i, py-fw/2, 8, false); draw_circle(px+i, py+ph+fw/2, 8, false);
@@ -77,8 +84,7 @@ global.draw_frame = function(px, py, pw, ph, f_type, fw) {
             draw_set_color(c_yellow); draw_circle(px-fw/2, py+j, 4, false); draw_circle(px+pw+fw/2, py+j, 4, false);
         }
     } else if (f_type == "superman") {
-        draw_set_color(make_color_rgb(220, 20, 60)); 
-        draw_rectangle(px-fw, py-fw, px+pw+fw, py+ph+fw, false);
+        border(make_color_rgb(220, 20, 60), px, py, pw, ph, fw);
         draw_set_color(make_color_rgb(30, 144, 255)); 
         for(var i=0; i<pw+fw*2; i+=40) {
             draw_rectangle(px-fw+i, py-fw, px-fw+i+20, py-fw+10, false);
@@ -92,15 +98,14 @@ global.draw_frame = function(px, py, pw, ph, f_type, fw) {
         draw_rectangle(px-fw, py-fw, px+pw+fw, py+ph+fw, true);
         draw_rectangle(px, py, px+pw, py+ph, true);
     } else if (f_type == "sparkle") {
-        draw_set_color(make_color_rgb(255, 105, 180)); 
-        draw_rectangle(px-fw, py-fw, px+pw+fw, py+ph+fw, false);
+        border(make_color_rgb(255, 105, 180), px, py, pw, ph, fw);
         draw_set_color(c_yellow);
         draw_set_halign(fa_center); draw_set_valign(fa_middle);
         for(var i=20; i<pw; i+=60) {
-            draw_text(px+i, py-fw/2, "✨"); draw_text(px+i, py+ph+fw/2, "✨");
+            draw_text(px+i, py-fw/2, "+"); draw_text(px+i, py+ph+fw/2, "+");
         }
         for(var j=20; j<ph; j+=60) {
-            draw_text(px-fw/2, py+j, "✨"); draw_text(px+pw+fw/2, py+j, "✨");
+            draw_text(px-fw/2, py+j, "+"); draw_text(px+pw+fw/2, py+j, "+");
         }
         draw_set_color(c_white); draw_rectangle(px-fw, py-fw, px+pw+fw, py+ph+fw, true);
         draw_set_halign(fa_left); draw_set_valign(fa_top);

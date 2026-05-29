@@ -90,7 +90,7 @@ if (!is_finished) {
     var btn_done_y = canvas_y1 + canvas_h + 10;
     
     var hover_done = (mx >= btn_done_x && mx <= btn_done_x + btn_done_w && my >= btn_done_y && my <= btn_done_y + btn_done_h);
-    if (hover_done) set_hand = true;
+    if (hover_done) global.hover_active = true;
     
     if ((hover_done && mouse_check_button_pressed(mb_left)) || keyboard_check_pressed(vk_space) || keyboard_check_pressed(vk_enter)) {
         is_finished = true; 
@@ -115,7 +115,7 @@ if (is_finished && finish_alpha >= 0.9) {
     var hover1 = (mx >= btn1_x && mx <= btn1_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
     var hover2 = (mx >= btn2_x && mx <= btn2_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
     
-    if (hover1 || hover2) set_hand = true;
+    if (hover1 || hover2) global.hover_active = true;
     
     if (mouse_check_button_pressed(mb_left)) {
         
@@ -153,20 +153,12 @@ if (is_finished && finish_alpha >= 0.9) {
         
         // --- CLICK NÚT BÁN LẤY TIỀN ---
         if (hover2) {
-            if (!variable_global_exists("player_money")) global.player_money = 0;
-            
             var sell_value = floor(min(pixels_painted / 500, 200)) + 50;
-            global.player_money += sell_value;
+            global.coins += sell_value;
             
-            window_set_cursor(cr_default);
             room_goto(room_game);
         }
     }
 }
 
-// Cập nhật biểu tượng chuột (hình bàn tay)
-if (set_hand) {
-    window_set_cursor(cr_handpoint);
-} else {
-    window_set_cursor(cr_default);
-}
+

@@ -32,7 +32,7 @@ if (is_visible) {
     var theme_name = variable_global_exists("current_theme_name") ? global.current_theme_name : "Chủ đề tự do";
     var theme_desc = variable_global_exists("current_theme_desc") ? global.current_theme_desc : "Thỏa sức sáng tạo!";
     
-    draw_text_transformed(bx, by + 15, "⭐ Chủ đề tuần này: " + string(theme_name) + " ⭐", 1.2, 1.2, 0);
+    draw_text_transformed(bx, by + 15, "- Chủ đề tuần này: " + string(theme_name) + " -", 1.2, 1.2, 0);
     
     draw_set_color(make_color_rgb(60, 60, 60));
     draw_text(bx, by + 55, string(theme_desc));

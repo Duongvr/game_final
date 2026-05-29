@@ -15,9 +15,6 @@ if (variable_global_exists("draw_mode") && global.draw_mode == "free") {
 canvas_w = 700;
 canvas_h = 382;
 
-if (!instance_exists(obj_theme_board)) {
-    instance_create_layer(0, 0, layer, obj_theme_board);
-}
 
 // ===== SURFACE =====
 surf = surface_create(canvas_w, canvas_h);

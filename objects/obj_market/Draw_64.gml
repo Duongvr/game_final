@@ -17,7 +17,7 @@ draw_set_alpha(1);
 draw_set_halign(fa_right);
 draw_set_valign(fa_top);
 draw_set_color(c_yellow);
-draw_text(gw - 16, hud_y + 6,  "$ Tiền: " + string(global.money));
+draw_text(gw - 16, hud_y + 6,  "$ Xu: " + string(global.coins));
 draw_set_color(c_white);
 draw_text(gw - 16, hud_y + 30, "Tổng tranh đã vẽ: " + string(global.paintings_owned));
 draw_text(gw - 16, hud_y + 54, "Đang trưng bày: " + string(global.paintings_hung));
@@ -48,28 +48,32 @@ if (show_ui) {
 
     // Thông tin tài nguyên nhỏ bên trong
     draw_set_color(c_white);
-    draw_text(gw / 2, ui_y + 58, "Tiền: " + string(global.money) + " $   |   Tổng tranh đã vẽ: " + string(global.paintings_owned));
+    draw_text(gw / 2, ui_y + 58, "Xu: " + string(global.coins) + " $   |   Tổng tranh đã vẽ: " + string(global.paintings_owned));
 
     // Đường kẻ ngang phân cách
     draw_set_color(make_color_rgb(80, 80, 80));
     draw_line(ui_x + 20, ui_y + 74, ui_x + ui_w - 20, ui_y + 74);
 
     // Các mục menu
-    if (!variable_global_exists("unlocked_frames")) global.unlocked_frames = [true, false, false];
-    if (!variable_global_exists("unlocked_bgs")) global.unlocked_bgs = [true, false];
+    var has_grid = variable_struct_exists(global.unlocked_items, "paper_grid") ? global.unlocked_items.paper_grid : false;
+    var has_rainbow = variable_struct_exists(global.unlocked_items, "paper_rainbow") ? global.unlocked_items.paper_rainbow : false;
+    var has_daisy = variable_struct_exists(global.unlocked_items, "frame_daisy") ? global.unlocked_items.frame_daisy : false;
+    var has_superman = variable_struct_exists(global.unlocked_items, "frame_superman") ? global.unlocked_items.frame_superman : false;
 
-    var t_khung_go = global.unlocked_frames[1] ? "[ĐÃ MUA]" : "50 $";
-    var t_khung_vang = global.unlocked_frames[2] ? "[ĐÃ MUA]" : "150 $";
-    var t_bg_nham = global.unlocked_bgs[1] ? "[ĐÃ MUA]" : "100 $";
+    var t_grid = has_grid ? "[ĐÃ MUA]" : "50 Xu";
+    var t_rainbow = has_rainbow ? "[ĐÃ MUA]" : "100 Xu";
+    var t_daisy = has_daisy ? "[ĐÃ MUA]" : "120 Xu";
+    var t_superman = has_superman ? "[ĐÃ MUA]" : "200 Xu";
 
     var _menu_labels = [
-        "Khung Gỗ: " + t_khung_go,
-        "Khung Vàng: " + t_khung_vang,
-        "Giấy Nhám: " + t_bg_nham,
+        "Giấy Ô Vuông: " + t_grid,
+        "Giấy Cầu Vồng: " + t_rainbow,
+        "Khung Hoa Cúc: " + t_daisy,
+        "Khung Siêu Nhân: " + t_superman,
         "Đóng Cửa Hàng"
     ];
-    for (var i = 0; i < 4; i++) {
-        var item_y = ui_y + 108 + i * 48;
+    for (var i = 0; i < 5; i++) {
+        var item_y = ui_y + 108 + i * 40;
         var _lbl = _menu_labels[i];
         if (i == menu_index) {
             // Nền highlight
