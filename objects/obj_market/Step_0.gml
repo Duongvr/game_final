@@ -32,39 +32,39 @@ if (show_ui) {
         switch (menu_index) {
             case 0:
                 if (!global.unlocked_items.paper_grid) {
-                    if (global.coins >= 30) { global.coins -= 30; global.unlocked_items.paper_grid = true; show_message("Đã mua Giấy Ô Vuông!"); }
-                    else show_message("Bạn không đủ Xu!");
-                } else show_message("Bạn đã sở hữu Giấy Ô Vuông rồi!");
+                    if (global.coins >= 30) { global.coins -= 30; global.unlocked_items.paper_grid = true; msg_text = "Đã mua Giấy Ô Vuông!"; msg_timer = 120; }
+                    else { msg_text = "Bạn không đủ Xu!"; msg_timer = 120; }
+                } else { msg_text = "Bạn đã sở hữu Giấy Ô Vuông rồi!"; msg_timer = 120; }
                 break;
             case 1:
                 if (!global.unlocked_items.paper_vintage) {
-                    if (global.coins >= 50) { global.coins -= 50; global.unlocked_items.paper_vintage = true; show_message("Đã mua Giấy Da Cổ!"); }
-                    else show_message("Bạn không đủ Xu!");
-                } else show_message("Bạn đã sở hữu Giấy Da Cổ rồi!");
+                    if (global.coins >= 50) { global.coins -= 50; global.unlocked_items.paper_vintage = true; msg_text = "Đã mua Giấy Da Cổ!"; msg_timer = 120; }
+                    else { msg_text = "Bạn không đủ Xu!"; msg_timer = 120; }
+                } else { msg_text = "Bạn đã sở hữu Giấy Da Cổ rồi!"; msg_timer = 120; }
                 break;
             case 2:
                 if (!global.unlocked_items.paper_rainbow) {
-                    if (global.coins >= 80) { global.coins -= 80; global.unlocked_items.paper_rainbow = true; show_message("Đã mua Giấy Cầu Vồng!"); }
-                    else show_message("Bạn không đủ Xu!");
-                } else show_message("Bạn đã sở hữu Giấy Cầu Vồng rồi!");
+                    if (global.coins >= 80) { global.coins -= 80; global.unlocked_items.paper_rainbow = true; msg_text = "Đã mua Giấy Cầu Vồng!"; msg_timer = 120; }
+                    else { msg_text = "Bạn không đủ Xu!"; msg_timer = 120; }
+                } else { msg_text = "Bạn đã sở hữu Giấy Cầu Vồng rồi!"; msg_timer = 120; }
                 break;
             case 3:
                 if (!global.unlocked_items.frame_daisy) {
-                    if (global.coins >= 100) { global.coins -= 100; global.unlocked_items.frame_daisy = true; show_message("Đã mua Khung Hoa Cúc!"); }
-                    else show_message("Bạn không đủ Xu!");
-                } else show_message("Bạn đã sở hữu Khung Hoa Cúc rồi!");
+                    if (global.coins >= 100) { global.coins -= 100; global.unlocked_items.frame_daisy = true; msg_text = "Đã mua Khung Hoa Cúc!"; msg_timer = 120; }
+                    else { msg_text = "Bạn không đủ Xu!"; msg_timer = 120; }
+                } else { msg_text = "Bạn đã sở hữu Khung Hoa Cúc rồi!"; msg_timer = 120; }
                 break;
             case 4:
                 if (!global.unlocked_items.frame_superman) {
-                    if (global.coins >= 150) { global.coins -= 150; global.unlocked_items.frame_superman = true; show_message("Đã mua Khung Siêu Nhân!"); }
-                    else show_message("Bạn không đủ Xu!");
-                } else show_message("Bạn đã sở hữu Khung Siêu Nhân rồi!");
+                    if (global.coins >= 150) { global.coins -= 150; global.unlocked_items.frame_superman = true; msg_text = "Đã mua Khung Siêu Nhân!"; msg_timer = 120; }
+                    else { msg_text = "Bạn không đủ Xu!"; msg_timer = 120; }
+                } else { msg_text = "Bạn đã sở hữu Khung Siêu Nhân rồi!"; msg_timer = 120; }
                 break;
             case 5:
                 if (!global.unlocked_items.frame_sparkle) {
-                    if (global.coins >= 200) { global.coins -= 200; global.unlocked_items.frame_sparkle = true; show_message("Đã mua Khung Lấp Lánh!"); }
-                    else show_message("Bạn không đủ Xu!");
-                } else show_message("Bạn đã sở hữu Khung Lấp Lánh rồi!");
+                    if (global.coins >= 200) { global.coins -= 200; global.unlocked_items.frame_sparkle = true; msg_text = "Đã mua Khung Lấp Lánh!"; msg_timer = 120; }
+                    else { msg_text = "Bạn không đủ Xu!"; msg_timer = 120; }
+                } else { msg_text = "Bạn đã sở hữu Khung Lấp Lánh rồi!"; msg_timer = 120; }
                 break;
             case 6:
                 show_ui = false;
@@ -76,4 +76,15 @@ if (show_ui) {
     if (keyboard_check_pressed(vk_escape)) {
         show_ui = false;
     }
+}
+
+if (!variable_instance_exists(id, "msg_text")) {
+    msg_text = "";
+    msg_timer = 0;
+}
+
+if (msg_timer > 0) {
+    msg_timer--;
+} else {
+    msg_text = "";
 }

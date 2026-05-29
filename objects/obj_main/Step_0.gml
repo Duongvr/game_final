@@ -19,7 +19,11 @@ var _h_input = right - left;
 var _v_input = 0;
 
 if (!_market_open) {
-    _v_input = down - up;
+    if (room == room_gallery) {
+        _v_input = 0; // Khóa di chuyển dọc trong gallery
+    } else {
+        _v_input = down - up;
+    }
 }
 
 if (_h_input != 0 && !_market_open) {
@@ -58,7 +62,10 @@ if (hsp != 0 || vsp != 0) {
 // ======================
 // VÀO PHÒNG TRANH (Nhấn E khi đứng cạnh)
 // ======================
-near_gallery = place_meeting(x, y, obj_phongtranh);
+near_gallery = false;
+if (instance_exists(obj_phongtranh) && distance_to_object(obj_phongtranh) < 100) {
+    near_gallery = true;
+}
 
 if (near_gallery && !_market_open) {
     if (keyboard_check_pressed(ord("E"))) {
@@ -66,21 +73,21 @@ if (near_gallery && !_market_open) {
     }
 }
 // Horizontal
-if (
-    tilemap_get_at_pixel(collision_map, x + hsp, y) == 0
-    &&
-    tilemap_get_at_pixel(collision_map, x + hsp, y + 12) == 0
-)
-{
-    x += hsp;
+var can_move_h = true;
+if (collision_map != -1) {
+    if (tilemap_get_at_pixel(collision_map, x + hsp, y) != 0 || 
+        tilemap_get_at_pixel(collision_map, x + hsp, y + 12) != 0) {
+        can_move_h = false;
+    }
 }
+if (can_move_h) x += hsp;
 
 // Vertical
-if (
-    tilemap_get_at_pixel(collision_map, x, y + vsp) == 0
-    &&
-    tilemap_get_at_pixel(collision_map, x + 8, y + vsp) == 0
-)
-{
-    y += vsp;
+var can_move_v = true;
+if (collision_map != -1) {
+    if (tilemap_get_at_pixel(collision_map, x, y + vsp) != 0 || 
+        tilemap_get_at_pixel(collision_map, x + 8, y + vsp) != 0) {
+        can_move_v = false;
+    }
 }
+if (can_move_v) y += vsp;

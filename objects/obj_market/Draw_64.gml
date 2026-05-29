@@ -95,6 +95,22 @@ if (show_ui) {
     // Gợi ý phím bên dưới
     draw_set_color(make_color_rgb(140, 140, 140));
     draw_text(gw / 2, ui_y + ui_h - 20, "[ Lên/Xuống ] Di chuyển   [ Space/Enter ] Chọn   [ E ] Đóng");
+    
+    // Notification (Thông báo mua hàng)
+    if (variable_instance_exists(id, "msg_timer") && msg_timer > 0 && msg_text != "") {
+        var notif_alpha = min(1, msg_timer / 20); // Mờ dần trong 20 frame cuối
+        draw_set_alpha(notif_alpha);
+        
+        // Vẽ nền mờ cho thông báo
+        draw_set_color(c_black);
+        draw_roundrect(gw / 2 - string_width(msg_text)/2 - 15, ui_y + ui_h + 10, gw / 2 + string_width(msg_text)/2 + 15, ui_y + ui_h + 40, false);
+        
+        // Vẽ chữ
+        draw_set_color(c_lime);
+        draw_text(gw / 2, ui_y + ui_h + 25, msg_text);
+        
+        draw_set_alpha(1);
+    }
 }
 
 // Reset

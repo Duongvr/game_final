@@ -30,35 +30,23 @@ if (mouse_check_button(mb_left) && in_canvas) {
 
     if (last_x != -1) {
         var dist = point_distance(last_x, last_y, sx, sy);
-        if (dist < 1) dist = 1;
-        pixels_painted += dist * brush_size * 1.5; // Area covered by stroke
         
-        for (var i = 0; i <= dist; i += 1) {
-            var t = i / dist;
-            var px = lerp(last_x, sx, t);
-            var py = lerp(last_y, sy, t);
+        if (dist > 0) {
+            pixels_painted += dist * brush_size * 1.5; // Area covered by stroke
+            
+            for (var i = 0; i <= dist; i += 1) {
+                var t = i / dist;
+                var px = lerp(last_x, sx, t);
+                var py = lerp(last_y, sy, t);
 
-            draw_circle_color(
-                px,
-                py,
-                brush_size,
-                global.selected_color,
-                global.selected_color,
-                false
-            );
+                draw_circle_color(px, py, brush_size, global.selected_color, global.selected_color, false);
+            }
         }
     }
     else {
         pixels_painted += pi * brush_size * brush_size; // Initial click area
         
-        draw_circle_color(
-            sx,
-            sy,
-            brush_size,
-            global.selected_color,
-            global.selected_color,
-            false
-        );
+        draw_circle_color(sx, sy, brush_size, global.selected_color, global.selected_color, false);
     }
 
     surface_reset_target();
@@ -181,7 +169,27 @@ if (is_finished && finish_alpha >= 0.9) {
                 var p_idx = array_length(global.saved_paintings) + 1;
                 var file_name = "painting_" + string(p_idx) + "_" + string(current_time) + ".png";
                 
-                if (surface_exists(surf)) surface_save(surf, file_name);
+                if (surface_exists(surf)) {
+                    var final_surf = surface_create(canvas_w, canvas_h);
+                    surface_set_target(final_surf);
+                    
+                    if (variable_global_exists("draw_paper") && variable_global_exists("selected_paper")) {
+                        global.draw_paper(0, 0, canvas_w, canvas_h, global.selected_paper);
+                    } else {
+                        draw_clear_alpha(c_white, 1);
+                    }
+                    
+                    draw_surface(surf, 0, 0);
+                    
+                    if (variable_global_exists("draw_frame") && variable_global_exists("selected_frame")) {
+                        var fw = 20;
+                        global.draw_frame(fw, fw, canvas_w - fw*2, canvas_h - fw*2, global.selected_frame, fw);
+                    }
+                    
+                    surface_reset_target();
+                    surface_save(final_surf, file_name);
+                    surface_free(final_surf);
+                }
                 
                 var t = clamp(pixels_painted / 150000, 0, 1);
                 var estimated_value = floor(100 * t) + array_length(used_colors) * 10 + 50;

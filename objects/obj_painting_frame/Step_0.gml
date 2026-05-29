@@ -1,9 +1,9 @@
 // Step Event cho obj_painting_frame
 var in_range = false;
 
-// Kiem tra khoang cach toi obj_main
+// Kiem tra khoang cach ngang toi obj_main
 if (instance_exists(obj_main)) {
-    if (distance_to_object(obj_main) < 150) {
+    if (abs(x - obj_main.x) < 150) {
         in_range = true;
     }
 }
@@ -11,15 +11,25 @@ if (instance_exists(obj_main)) {
 is_hovered = in_range;
 
 if (is_hovered) {
-    if (keyboard_check_pressed(ord("E"))) {
-        show_message_async("Tên tranh: " + p_name + "\nĐộ hoàn thiện: " + string(floor(p_progress * 100)) + "%\nGiá trị: " + string(p_value) + " xu");
+    // Mở popup
+    if (variable_instance_exists(id, "show_detail") && show_detail) {
+        if (keyboard_check_pressed(vk_escape) || keyboard_check_pressed(ord("E"))) {
+            show_detail = false;
+        }
+    } else {
+        if (keyboard_check_pressed(ord("E"))) {
+            show_detail = true;
+        }
     }
     
+    // Bán tranh
     if (keyboard_check_pressed(ord("B"))) {
-        if (!variable_global_exists("money")) global.money = 0;
+        if (!variable_global_exists("coins")) global.coins = 0;
         
-        global.money += p_value;
-        show_message_async("Đã bán tranh! Bạn nhận được " + string(p_value) + " xu.");
+        global.coins += p_value;
+        if (asset_get_index("snd_ting") != -1) {
+            audio_play_sound(snd_ting, 1, false);
+        }
         
         // Xoa khoi mang global
         if (array_index < array_length(global.saved_paintings)) {
@@ -34,4 +44,7 @@ if (is_hovered) {
         // Refresh lai phong trung bay
         room_restart();
     }
+} else {
+    // Nếu đi xa khỏi tranh thì đóng popup
+    show_detail = false;
 }

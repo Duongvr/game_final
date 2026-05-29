@@ -50,41 +50,24 @@ if (mouse_check_button(mb_left) && in_canvas) {
     // =================================================
 
     if (last_x != -1) {
-
         var dist = point_distance(last_x, last_y, sx, sy);
 
-        // Tránh chia cho 0
-        if (dist < 1) dist = 1;
+        if (dist > 0) {
+            pixels_painted += dist * brush_size * 1.5;
 
-        for (var i = 0; i <= dist; i += 1) {
+            for (var i = 0; i <= dist; i += 1) {
+                var t = i / dist;
+                var px = lerp(last_x, sx, t);
+                var py = lerp(last_y, sy, t);
 
-            var t = i / dist;
-
-            var px = lerp(last_x, sx, t);
-            var py = lerp(last_y, sy, t);
-
-            // ===== VẼ MÀU =====
-
-            draw_circle_color(
-                px,
-                py,
-                brush_size,
-                global.selected_color,
-                global.selected_color,
-                false
-            );
+                draw_circle_color(px, py, brush_size, global.selected_color, global.selected_color, false);
+            }
         }
     }
     else {
+        pixels_painted += pi * brush_size * brush_size;
 
-        draw_circle_color(
-            sx,
-            sy,
-            brush_size,
-            global.selected_color,
-            global.selected_color,
-            false
-        );
+        draw_circle_color(sx, sy, brush_size, global.selected_color, global.selected_color, false);
     }
 
     surface_reset_target();
@@ -96,11 +79,6 @@ if (mouse_check_button(mb_left) && in_canvas) {
     last_x = sx;
     last_y = sy;
 
-    // =================================================
-    // TĂNG PROGRESS
-    // =================================================
-
-    pixels_painted += pi * brush_size * brush_size * 0.05;
     
     // TRACK COLOR
     var c_sel = global.selected_color;
@@ -232,16 +210,37 @@ if (is_finished && finish_alpha >= 0.9) {
                 var file_name = "painting_" + string(p_idx) + "_" + string(current_time) + ".png";
                 
                 if (surface_exists(surf)) {
-                    surface_set_target(surf);
+                    var final_surf = surface_create(canvas_w, canvas_h);
+                    surface_set_target(final_surf);
+                    
+                    // 1) Vẽ nền giấy
+                    if (variable_global_exists("draw_paper") && variable_global_exists("selected_paper")) {
+                        global.draw_paper(0, 0, canvas_w, canvas_h, global.selected_paper);
+                    } else {
+                        draw_clear_alpha(c_white, 1);
+                    }
+                    
+                    // 2) Vẽ nét đã tô
+                    draw_surface(surf, 0, 0);
+                    
+                    // 3) Vẽ nét viền tranh (obj_net_tranh)
                     if (instance_exists(obj_net_tranh)) {
                         var inst = instance_find(obj_net_tranh, 0);
                         var draw_x = inst.x - x;
                         var draw_y = inst.y - y;
                         draw_sprite_ext(inst.sprite_index, inst.image_index, draw_x, draw_y, inst.image_xscale, inst.image_yscale, inst.image_angle, inst.image_blend, inst.image_alpha);
                     }
+                    
+                    // 4) Vẽ khung tranh (dịch vào trong để không bị cắt khỏi surface)
+                    if (variable_global_exists("draw_frame") && variable_global_exists("selected_frame")) {
+                        var fw = 20;
+                        global.draw_frame(fw, fw, canvas_w - fw*2, canvas_h - fw*2, global.selected_frame, fw);
+                    }
+                    
                     surface_reset_target();
                     
-                    surface_save(surf, file_name);
+                    surface_save(final_surf, file_name);
+                    surface_free(final_surf);
                 }
                 
                 var estimated_val = floor(current_progress * 100) + array_length(used_colors) * 10 + 50;
@@ -259,7 +258,15 @@ if (is_finished && finish_alpha >= 0.9) {
             
             // --- CLICK NÚT BÁN LẤY TIỀN ---
             if (hover2) {
-                asking_theme = true;
+                var t = clamp(current_progress, 0, 1);
+                var g_cb = 100 * t;
+                var s_m = array_length(used_colors);
+                var d_m = s_m * 10;
+                var t_cd = 0; // Không tính chủ đề
+                var total = floor(g_cb + d_m + t_cd);
+                
+                receipt_data = { g_cb: floor(g_cb), s_m: d_m, t_cd: t_cd, total: total };
+                show_receipt = true;
             }
         }
     }
