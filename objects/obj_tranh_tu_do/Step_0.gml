@@ -91,10 +91,22 @@ if (!is_finished) {
     if (hover_done) global.hover_active = true;
     
     if ((hover_done && mouse_check_button_pressed(mb_left)) || keyboard_check_pressed(vk_space) || keyboard_check_pressed(vk_enter)) {
-        is_finished = true; 
-        current_progress = 1; // Free mode luôn coi là 100%
+        if (pixels_painted > 500) {
+            is_finished = true; 
+            current_progress = 1; // Free mode luôn coi là 100%
+        } else {
+            msg_text = "Tranh vẫn còn trống, bé hãy vẽ thêm nhé!";
+            msg_timer = 120;
+        }
     }
 }
+
+if (!variable_instance_exists(id, "msg_text")) {
+    msg_text = "";
+    msg_timer = 0;
+}
+if (msg_timer > 0) msg_timer--;
+else msg_text = "";
 
 // =====================================================
 // XỬ LÝ LỰA CHỌN: TRƯNG BÀY HAY BÁN

@@ -3,8 +3,8 @@ var gh = display_get_gui_height();
 
 var bx = gw / 2;
 var by = 40;
-var bw = 500;
-var bh = 100;
+var bw = 650; // Mở rộng chiều ngang bảng gỗ
+var bh = 110; // Mở rộng chiều dọc bảng gỗ
 
 var mx = device_mouse_x_to_gui(0);
 var my = device_mouse_y_to_gui(0);
@@ -35,7 +35,8 @@ if (is_visible) {
     draw_text_transformed(bx, by + 15, "- Chủ đề tuần này: " + string(theme_name) + " -", 1.2, 1.2, 0);
     
     draw_set_color(make_color_rgb(60, 60, 60));
-    draw_text(bx, by + 55, string(theme_desc));
+    // Dùng draw_text_ext để tự động ngắt dòng nếu văn bản dài quá chiều rộng của bảng (bw - 30)
+    draw_text_ext(bx, by + 50, string(theme_desc), 25, bw - 30);
     
     var mas_x = bx - bw/2 - 30;
     var mas_y = by + bh/2;

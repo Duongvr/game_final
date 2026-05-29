@@ -42,11 +42,13 @@ if (global.selected_color != c_white && in_canvas) {
 // 5) Hướng dẫn hoàn thành
 var hint_txt = "Nhấn phím SPACE/ENTER hoặc nút XONG để nộp tranh | Lăn chuột để đổi nét cọ to nhỏ nhé!";
 var hy = canvas_y1 + canvas_h + 65;
+draw_set_halign(fa_center);
 draw_set_color(c_black);
 draw_text(canvas_x1 + canvas_w/2 - 1, hy, hint_txt);
 draw_text(canvas_x1 + canvas_w/2 + 1, hy, hint_txt);
 draw_set_color(c_ltgray);
 draw_text(canvas_x1 + canvas_w/2, hy, hint_txt);
+draw_set_halign(fa_left);
 
 // 7) Hiển thị tên màu đang chọn ở góc dưới trái
 if (global.selected_color != c_white) {
@@ -77,16 +79,24 @@ if (!is_finished) {
     var btn_done_x = canvas_x1 + canvas_w - btn_done_w;
     var btn_done_y = canvas_y1 + canvas_h + 10;
     
+    // Nếu chưa vẽ đủ thì làm mờ nút đi một chút
+    var can_finish = (variable_instance_exists(id, "pixels_painted") && pixels_painted > 500);
+    
     var hover_done = (mx >= btn_done_x && mx <= btn_done_x + btn_done_w && my >= btn_done_y && my <= btn_done_y + btn_done_h);
     
-    draw_set_color(hover_done ? c_lime : c_green);
+    if (can_finish) {
+        draw_set_color(hover_done ? c_lime : c_green);
+    } else {
+        draw_set_color(hover_done ? make_color_rgb(150, 150, 150) : c_gray);
+    }
+    
     draw_roundrect(btn_done_x, btn_done_y, btn_done_x + btn_done_w, btn_done_y + btn_done_h, false);
     
     draw_set_color(c_white);
     draw_set_halign(fa_center);
     draw_set_valign(fa_middle);
     if (asset_get_index("Font1") != -1) draw_set_font(Font1);
-    draw_text(btn_done_x + btn_done_w/2, btn_done_y + btn_done_h/2, "XONG");
+    draw_text(btn_done_x + btn_done_w/2, btn_done_y + btn_done_h/2 + 3, "XONG");
     
     draw_set_halign(fa_left);
     draw_set_valign(fa_top);
@@ -128,8 +138,8 @@ if (variable_instance_exists(id, "is_finished") && is_finished) {
             var btn_h = 40;
             var btn_x = rx - btn_w / 2;
             var btn_y = ry + 180;
-            var hover_done = (mx >= btn_x && mx <= btn_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
-            draw_set_color(hover_done ? c_lime : c_green);
+            var hover_done2 = (mx >= btn_x && mx <= btn_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
+            draw_set_color(hover_done2 ? c_lime : c_green);
             draw_roundrect(btn_x, btn_y, btn_x + btn_w, btn_y + btn_h, false);
             draw_set_color(c_white);
             draw_text(rx, btn_y + btn_h/2, "NHẬN TIỀN");
@@ -155,46 +165,56 @@ if (variable_instance_exists(id, "is_finished") && is_finished) {
             draw_set_color(hover1 ? c_lime : c_green);
             draw_roundrect(btn1_x, btn_y, btn1_x + btn_w, btn_y + btn_h, false);
             draw_set_color(c_white);
-            draw_text(btn1_x + btn_w/2, btn_y + btn_h/2, "CÓ (+50 Xu)");
+            draw_text(btn1_x + btn_w/2, btn_y + btn_h/2, "CÓ");
             
-            draw_set_color(hover2 ? c_red : make_color_rgb(180, 50, 50));
+            draw_set_color(hover2 ? make_color_rgb(255, 100, 100) : c_red);
             draw_roundrect(btn2_x, btn_y, btn2_x + btn_w, btn_y + btn_h, false);
             draw_set_color(c_white);
-            draw_text(btn2_x + btn_w/2, btn_y + btn_h/2, "KHÔNG (+0 Xu)");
+            draw_text(btn2_x + btn_w/2, btn_y + btn_h/2, "KHÔNG");
         } else {
-            draw_set_color(c_yellow);
-            draw_text_transformed(text_x, text_y, "BỨC TRANH TUYỆT ĐẸP!", 1.5, 1.5, 0);
-            
             draw_set_color(c_white);
-            draw_text_transformed(text_x, text_y + 40, "Bạn muốn làm gì với bức tranh này?", 1, 1, 0);
+            draw_text_transformed(text_x, text_y - 20, "Tranh đã vẽ xong!", 1.5, 1.5, 0);
+            draw_set_color(c_yellow);
+            draw_text(text_x, text_y + 20, "Bạn muốn Trưng bày hay Bán lấy xu?");
             
-            var btn_w = 200;
-            var btn_h = 60;
-            var center_x = room_width / 2;
-            var center_y = room_height / 2 + 50;
+            var btn_w = 150;
+            var btn_h = 50;
+            var btn1_x = text_x - 170;
+            var btn2_x = text_x + 20;
+            var btn_y = text_y + 80;
             
-            var btn1_x = center_x - 220; // Trưng bày
-            var btn2_x = center_x + 20;  // Bán
-            var btn_y = center_y;
-            
-            // Nút Trưng Bày (Xanh lá)
             var hover1 = (mx >= btn1_x && mx <= btn1_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
-            draw_set_color(hover1 ? c_lime : c_green);
+            var hover2 = (mx >= btn2_x && mx <= btn2_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
+            
+            draw_set_color(hover1 ? c_aqua : c_blue);
             draw_roundrect(btn1_x, btn_y, btn1_x + btn_w, btn_y + btn_h, false);
             draw_set_color(c_white);
             draw_text(btn1_x + btn_w/2, btn_y + btn_h/2, "TRƯNG BÀY");
             
-            // Nút Bán (Cam/Vàng)
-            var hover2 = (mx >= btn2_x && mx <= btn2_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
-            draw_set_color(hover2 ? c_yellow : c_orange);
+            draw_set_color(hover2 ? c_lime : c_green);
             draw_roundrect(btn2_x, btn_y, btn2_x + btn_w, btn_y + btn_h, false);
-            draw_set_color(c_black);
-            var estimated_val = floor(clamp(pixels_painted / 150000, 0, 1) * 100) + array_length(used_colors) * 10;
-            draw_text(btn2_x + btn_w/2, btn_y + btn_h/2, "BÁN LẤY TIỀN");
+            draw_set_color(c_white);
+            draw_text(btn2_x + btn_w/2, btn_y + btn_h/2, "BÁN LẤY XU");
         }
     }
     
-    draw_set_halign(fa_left);
-    draw_set_valign(fa_top);
     draw_set_alpha(1);
+}
+
+// ========================================
+// VẼ THÔNG BÁO LỖI CHƯA VẼ
+// ========================================
+if (variable_instance_exists(id, "msg_timer") && msg_timer > 0 && msg_text != "") {
+    var notif_alpha = min(1, msg_timer / 20);
+    draw_set_alpha(notif_alpha);
+    
+    draw_set_color(c_black);
+    draw_roundrect(room_width/2 - string_width(msg_text)/2 - 20, room_height - 90, room_width/2 + string_width(msg_text)/2 + 20, room_height - 40, false);
+    
+    draw_set_color(c_yellow);
+    draw_set_halign(fa_center); draw_set_valign(fa_middle);
+    draw_text(room_width/2, room_height - 65, msg_text);
+    
+    draw_set_alpha(1);
+    draw_set_halign(fa_left); draw_set_valign(fa_top);
 }

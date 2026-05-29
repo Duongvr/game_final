@@ -11,8 +11,8 @@
   "name":"obj_gallery_controller",
   "overriddenProperties":[],
   "parent":{
-    "name":"Object cần thiết",
-    "path":"folders/Object cần thiết.yy",
+    "name":"manager_control",
+    "path":"folders/manager_control.yy",
   },
   "parentObjectId":null,
   "persistent":false,

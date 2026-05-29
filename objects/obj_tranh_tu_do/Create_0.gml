@@ -6,6 +6,17 @@ if (!instance_exists(obj_theme_board)) {
     instance_create_layer(0, 0, layer, obj_theme_board);
 }
 
+// Bắt buộc tải lại dữ liệu chủ đề mỗi khi vào vẽ tự do
+if (instance_exists(obj_data_manager)) {
+    instance_destroy(obj_data_manager);
+}
+instance_create_layer(0, 0, layer, obj_data_manager);
+
+// Đảm bảo obj_GameManager luôn tồn tại dù người chơi test thẳng room
+if (!instance_exists(obj_GameManager)) {
+    instance_create_layer(0, 0, layer, obj_GameManager);
+}
+
 // ===== SURFACE =====
 surf = surface_create(canvas_w, canvas_h);
 
