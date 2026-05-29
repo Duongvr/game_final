@@ -29,3 +29,9 @@ finish_alpha = 0;
 finish_timer = 0;
 
 depth = -9999; // Đưa object lên tầng cao nhất để không bị che khuất UI hoàn thành
+
+// ===== ECONOMY & RECEIPT =====
+used_colors = [];
+asking_theme = false;
+show_receipt = false;
+receipt_data = { g_cb: 0, s_m: 0, t_cd: 0, total: 0 };

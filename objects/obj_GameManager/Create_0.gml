@@ -7,7 +7,7 @@ enum GameState {
 global.current_state = GameState.DRAWING;
 
 if (!variable_global_exists("coins")) {
-    global.coins = 200; // Cho sẵn 200 xu để test
+    global.coins = 50; 
 }
 
 // Giả lập dữ liệu chủ đề
@@ -22,11 +22,11 @@ global.selected_frame = "basic"; // basic, daisy, superman, sparkle
 if (!variable_global_exists("unlocked_items")) {
     global.unlocked_items = {
         paper_white: true,
-        paper_grid: true,
-        paper_vintage: true, // giả sử đã mở khóa
+        paper_grid: false,
+        paper_vintage: false, 
         paper_rainbow: false,
         frame_basic: true,
-        frame_daisy: true, // giả sử đã mua
+        frame_daisy: false, 
         frame_superman: false,
         frame_sparkle: false
     };

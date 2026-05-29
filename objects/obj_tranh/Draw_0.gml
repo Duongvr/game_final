@@ -178,32 +178,82 @@ if (variable_instance_exists(id, "is_finished") && is_finished) {
     
     // --- VẼ 2 NÚT BẤM LỰA CHỌN ---
     if (finish_alpha >= 0.9) {
-        var btn_w = 200;
-        var btn_h = 60;
-        var center_x = room_width / 2;
-        var center_y = room_height / 2 + 50;
-        
-        var btn1_x = center_x - 220; // Trưng bày
-        var btn2_x = center_x + 20;  // Bán
-        var btn_y = center_y;
-        
         var mx = mouse_x;
         var my = mouse_y;
         
-        // Nút Trưng Bày (Xanh lá)
-        var hover1 = (mx >= btn1_x && mx <= btn1_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
-        draw_set_color(hover1 ? c_lime : c_green);
-        draw_roundrect(btn1_x, btn_y, btn1_x + btn_w, btn_y + btn_h, false);
-        draw_set_color(c_white);
-        draw_text(btn1_x + btn_w/2, btn_y + btn_h/2, "TRƯNG BÀY");
-        
-        // Nút Bán (Cam/Vàng)
-        var hover2 = (mx >= btn2_x && mx <= btn2_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
-        draw_set_color(hover2 ? c_yellow : c_orange);
-        draw_roundrect(btn2_x, btn_y, btn2_x + btn_w, btn_y + btn_h, false);
-        draw_set_color(c_black);
-        var sell_val = floor(current_progress * 200) + 50;
-        draw_text(btn2_x + btn_w/2, btn_y + btn_h/2, "BÁN LẤY TIỀN (" + string(sell_val) + ")");
+        if (show_receipt) {
+            var rx = room_width / 2;
+            var ry = room_height / 2 - 80;
+            draw_set_color(c_white);
+            draw_text_transformed(rx, ry, "--- TỔNG KẾT BÁN TRANH ---", 1.2, 1.2, 0);
+            draw_text(rx, ry + 40, "Tiền công cơ bản: " + string(receipt_data.g_cb) + " Xu");
+            draw_text(rx, ry + 70, "Thưởng màu sắc (" + string(receipt_data.s_m / 10) + " màu): " + string(receipt_data.s_m) + " Xu");
+            draw_text(rx, ry + 100, "Thưởng đúng chủ đề: " + string(receipt_data.t_cd) + " Xu");
+            draw_set_color(c_yellow);
+            draw_text_transformed(rx, ry + 140, "TỔNG NHẬN: " + string(receipt_data.total) + " Xu", 1.5, 1.5, 0);
+            
+            var btn_w = 120;
+            var btn_h = 40;
+            var btn_x = rx - btn_w / 2;
+            var btn_y = ry + 180;
+            var hover_done = (mx >= btn_x && mx <= btn_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
+            draw_set_color(hover_done ? c_lime : c_green);
+            draw_roundrect(btn_x, btn_y, btn_x + btn_w, btn_y + btn_h, false);
+            draw_set_color(c_white);
+            draw_text(rx, btn_y + btn_h/2, "NHẬN TIỀN");
+        } else if (asking_theme) {
+            var cx = room_width / 2;
+            var cy = room_height / 2 - 50;
+            draw_set_color(c_white);
+            draw_text_transformed(cx, cy, "Bé có vẽ đúng chủ đề không?", 1.2, 1.2, 0);
+            draw_set_color(c_yellow);
+            if (variable_global_exists("current_theme_name")) {
+                draw_text(cx, cy + 30, "[" + global.current_theme_name + "]");
+            }
+            
+            var btn_w = 150;
+            var btn_h = 50;
+            var btn1_x = cx - 170;
+            var btn2_x = cx + 20;
+            var btn_y = cy + 100;
+            
+            var hover1 = (mx >= btn1_x && mx <= btn1_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
+            var hover2 = (mx >= btn2_x && mx <= btn2_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
+            
+            draw_set_color(hover1 ? c_lime : c_green);
+            draw_roundrect(btn1_x, btn_y, btn1_x + btn_w, btn_y + btn_h, false);
+            draw_set_color(c_white);
+            draw_text(btn1_x + btn_w/2, btn_y + btn_h/2, "CÓ (+50 Xu)");
+            
+            draw_set_color(hover2 ? c_red : make_color_rgb(180, 50, 50));
+            draw_roundrect(btn2_x, btn_y, btn2_x + btn_w, btn_y + btn_h, false);
+            draw_set_color(c_white);
+            draw_text(btn2_x + btn_w/2, btn_y + btn_h/2, "KHÔNG (+0 Xu)");
+        } else {
+            var btn_w = 200;
+            var btn_h = 60;
+            var center_x = room_width / 2;
+            var center_y = room_height / 2 + 50;
+            
+            var btn1_x = center_x - 220; // Trưng bày
+            var btn2_x = center_x + 20;  // Bán
+            var btn_y = center_y;
+            
+            // Nút Trưng Bày (Xanh lá)
+            var hover1 = (mx >= btn1_x && mx <= btn1_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
+            draw_set_color(hover1 ? c_lime : c_green);
+            draw_roundrect(btn1_x, btn_y, btn1_x + btn_w, btn_y + btn_h, false);
+            draw_set_color(c_white);
+            draw_text(btn1_x + btn_w/2, btn_y + btn_h/2, "TRƯNG BÀY");
+            
+            // Nút Bán (Cam/Vàng)
+            var hover2 = (mx >= btn2_x && mx <= btn2_x + btn_w && my >= btn_y && my <= btn_y + btn_h);
+            draw_set_color(hover2 ? c_yellow : c_orange);
+            draw_roundrect(btn2_x, btn_y, btn2_x + btn_w, btn_y + btn_h, false);
+            draw_set_color(c_black);
+            var estimated_val = floor(current_progress * 100) + array_length(used_colors) * 10;
+            draw_text(btn2_x + btn_w/2, btn_y + btn_h/2, "BÁN LẤY TIỀN");
+        }
     }
     
     // Reset

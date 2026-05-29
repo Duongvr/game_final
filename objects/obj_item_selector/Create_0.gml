@@ -19,11 +19,11 @@ frame_names = ["Gỗ cơ bản", "Hoa cúc", "Siêu nhân", "Lấp lánh"];
 // Fallback (for testing room directly)
 if (!variable_global_exists("selected_paper")) global.selected_paper = "white";
 if (!variable_global_exists("selected_frame")) global.selected_frame = "basic";
-if (!variable_global_exists("coins")) global.coins = 200;
+if (!variable_global_exists("coins")) global.coins = 50;
 if (!variable_global_exists("unlocked_items")) {
     global.unlocked_items = {
-        paper_white: true, paper_grid: true, paper_vintage: true, paper_rainbow: false,
-        frame_basic: true, frame_daisy: true, frame_superman: false, frame_sparkle: false
+        paper_white: true, paper_grid: false, paper_vintage: false, paper_rainbow: false,
+        frame_basic: true, frame_daisy: false, frame_superman: false, frame_sparkle: false
     };
 }
 
