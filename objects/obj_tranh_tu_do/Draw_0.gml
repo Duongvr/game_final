@@ -111,13 +111,7 @@ if (variable_instance_exists(id, "is_finished") && is_finished) {
     var text_x = room_width / 2;
     var text_y = room_height / 2 - 30;
     
-    draw_set_color(c_yellow);
-    draw_text_transformed(text_x, text_y, "BỨC TRANH TUYỆT ĐẸP!", 1.5, 1.5, 0);
-    
-    draw_set_color(c_white);
-    draw_text_transformed(text_x, text_y + 40, "Bạn muốn làm gì với bức tranh này?", 1, 1, 0);
-    
-    // --- VẼ 2 NÚT BẤM LỰA CHỌN ---
+    // --- VẼ CÁC TRẠNG THÁI LỰA CHỌN ---
     if (finish_alpha >= 0.9) {
         if (show_receipt) {
             var rx = room_width / 2;
@@ -168,6 +162,12 @@ if (variable_instance_exists(id, "is_finished") && is_finished) {
             draw_set_color(c_white);
             draw_text(btn2_x + btn_w/2, btn_y + btn_h/2, "KHÔNG (+0 Xu)");
         } else {
+            draw_set_color(c_yellow);
+            draw_text_transformed(text_x, text_y, "BỨC TRANH TUYỆT ĐẸP!", 1.5, 1.5, 0);
+            
+            draw_set_color(c_white);
+            draw_text_transformed(text_x, text_y + 40, "Bạn muốn làm gì với bức tranh này?", 1, 1, 0);
+            
             var btn_w = 200;
             var btn_h = 60;
             var center_x = room_width / 2;
